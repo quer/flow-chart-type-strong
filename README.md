@@ -5,7 +5,20 @@ A simple dynamic flow chart, where only the same type can be connected together.
 
 [![ex-010](images/demo.png)](https://github.com/quer/flow-chart-type-strong)
 
+# Features
+ * Drag and drop menu modules to the screen
+ * Draggable modules
+ * Create connection between output and input. ( click output once, and then click input)
+ * Remove connections between output and input. ( click a output 2 times)
+ * change conneciton between output and 2 input.
+ * delete the modules it self.
+ * Save all loaded modules
+ * Load modules from json object.
+ * Only a output and input of same type can be connected.
+ * Simple rules to ensure you only do what is possible
 
+
+# works
 The way it works, it will request a url, where it will get the structure of all the boxes, that is going to be able to create. 
 I have setup an example in `api.php` where it will retun a json object: 
 
