@@ -24,7 +24,8 @@ A simple dynamic flow chart, where only the same type can be connected together.
  * dynamic width on modules ( predefined for each module)
  * simple rule, it will add red border to mandatory input/output/input fields, when saving
 
-
+# demo
+https://quers.net/flow/
 
 # works
 The way it works, it will request a url, where it will get the structure of all the boxes, that is going to be able to create. 
