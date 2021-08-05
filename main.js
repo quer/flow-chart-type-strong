@@ -303,11 +303,11 @@ function Field(setting, parentBox, preLoadData = null) {
     this.el = $('<div class="field_box" id="'+this.elId+'"></div>');
     this.fieldEl = null;
     if(this.setting.type == "checkbox"){
-        this.fieldEl = new Field_checkbox(this.setting, preLoadData);
+        this.fieldEl = new Field_checkbox(this.setting, this, preLoadData);
     }else if(this.setting.type == "input"){
-        this.fieldEl = new Field_input(this.setting, preLoadData);
+        this.fieldEl = new Field_input(this.setting, this, preLoadData);
     }else if(this.setting.type == "radio"){
-        this.fieldEl = new Field_radio(this.setting, preLoadData);
+        this.fieldEl = new Field_radio(this.setting, this, preLoadData);
     }
 
     if(this.fieldEl != null){
@@ -325,8 +325,10 @@ function Field(setting, parentBox, preLoadData = null) {
         return true;
     }
 }
-function Field_radio(setting, preLoadData = null) {
+function Field_radio(setting, parentBox, preLoadData = null) {
     this.setting = setting;
+    this.parentBox = parentBox;
+    this.localId = `${this.setting.ID}_${this.parentBox.id}`;
     var inputHtml = `${this.setting.text}<br>`;
     for (let i = 0; i < this.setting.values.length; i++) {
         const checkboxValue = this.setting.values[i];
@@ -334,15 +336,15 @@ function Field_radio(setting, preLoadData = null) {
         if(preLoadData && preLoadData.checked == i){
             preloadHtml = ` checked="checked"`;
         }
-        inputHtml += `<input type="radio" id="${this.setting.ID}_${i}" name="${this.setting.ID}" value="${i}" ${preloadHtml}>
-        <label for="${this.setting.ID}_${i}">${checkboxValue}</label><br>`;
+        inputHtml += `<input type="radio" id="${this.localId}_${i}" name="${this.localId}" value="${i}" ${preloadHtml}>
+        <label for="${this.localId}_${i}">${checkboxValue}</label><br>`;
     }
 
     this.el = $(`<div>${inputHtml}</div>`);
 
     this.Export = function () {
         for (let i = 0; i < this.setting.values.length; i++) {
-            var radioGui = this.el.find(`#${this.setting.ID}_${i}`);
+            var radioGui = this.el.find(`#${this.localId}_${i}`);
             if(radioGui.is(':checked')){
                 return {'fieldID': this.setting.ID, 'checked': i};
             }
@@ -354,7 +356,7 @@ function Field_radio(setting, preLoadData = null) {
         if(this.setting.mandatory){
             var valid = false;
             for (let i = 0; i < this.setting.values.length; i++) {
-                var radioGui = this.el.find(`#${this.setting.ID}_${i}`);
+                var radioGui = this.el.find(`#${this.localId}_${i}`);
                 if(radioGui.is(':checked')){
                     valid = true;
                     break;
@@ -368,8 +370,9 @@ function Field_radio(setting, preLoadData = null) {
         return true;
     }
 }
-function Field_input(setting, preLoadData = null) {
+function Field_input(setting, parentBox, preLoadData = null) {
     this.setting = setting;
+    this.parentBox = parentBox;
     var preloadHtml = "";
     if(preLoadData && preLoadData.value != ""){
         preloadHtml = ` value="${preLoadData.value}"`;
@@ -398,8 +401,9 @@ function Field_input(setting, preLoadData = null) {
         return true;
     }
 }
-function Field_checkbox(setting, preLoadData = null) {
+function Field_checkbox(setting, parentBox, preLoadData = null) {
     this.setting = setting;
+    this.parentBox = parentBox;
     var inputHtml = `${this.setting.text}<br>`;
     for (let i = 0; i < this.setting.values.length; i++) {
         const checkboxValue = this.setting.values[i];
