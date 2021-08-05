@@ -41,7 +41,8 @@ $outp = array(
                 array(
                     'ID' => '1_O_1',
                     'Name' => 'GroupId',
-                    'type' => 'GroupId'
+                    'type' => 'GroupId',
+                    'mandatory' => true
                 ),
                 array(
                     'ID' => '1_O_2',

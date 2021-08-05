@@ -160,6 +160,25 @@ function box(settings, poss, preloadData = null) {
         });
         return returnValue;
     }
+    this.RunRules = function () {
+        var valid = true;
+        this.input.forEach(input => {
+            if(!input.RunRules()){
+                valid = false;
+            }
+        });
+        this.output.forEach(output => {
+            if(!output.RunRules()){
+                valid = false;
+            }
+        });
+        this.field.forEach(field => {
+            if(!field.RunRules()){
+                valid = false;
+            }
+        });
+        return valid;
+    }
 }
 
 function Input(setting, parentBox) {
@@ -216,6 +235,14 @@ function Input(setting, parentBox) {
         }
         
     }
+    this.RunRules = function () {
+        this.el.find(".input").removeClass("alerts-border");
+        if(this.setting.mandatory && this.connectedTo == null){
+            this.el.find(".input").addClass("alerts-border");
+            return false;
+        }
+        return true;
+    }
 }
 function Output(setting, parentBox) {
     ++unitNumber;
@@ -255,7 +282,14 @@ function Output(setting, parentBox) {
     }
     this.RemoveActiveColor = function () {
         this.el.find(".output").css({'background-color': ''});
-        
+    }
+    this.RunRules = function () {
+        this.el.find(".output").removeClass("alerts-border");
+        if(this.setting.mandatory && this.connectedTo == null){
+            this.el.find(".output").addClass("alerts-border");
+            return false;
+        }
+        return true;
     }
 }
 
@@ -285,6 +319,11 @@ function Field(setting, parentBox, preLoadData = null) {
             return this.fieldEl.Export();
         return null;
     }
+    this.RunRules = function () {
+        if(this.fieldEl != null)
+            return this.fieldEl.RunRules();
+        return true;
+    }
 }
 function Field_radio(setting, preLoadData = null) {
     this.setting = setting;
@@ -310,6 +349,24 @@ function Field_radio(setting, preLoadData = null) {
         }
         return null;
     }
+    this.RunRules = function () {
+        this.el.removeClass("alerts-border");
+        if(this.setting.mandatory){
+            var valid = false;
+            for (let i = 0; i < this.setting.values.length; i++) {
+                var radioGui = this.el.find(`#${this.setting.ID}_${i}`);
+                if(radioGui.is(':checked')){
+                    valid = true;
+                    break;
+                }
+            }
+            if(!valid){
+                this.el.addClass("alerts-border");
+            }
+            return valid;
+        }
+        return true;
+    }
 }
 function Field_input(setting, preLoadData = null) {
     this.setting = setting;
@@ -328,6 +385,17 @@ function Field_input(setting, preLoadData = null) {
             return {'fieldID': this.setting.ID, 'value': inputGui.val()};
         }
         return null;
+    }
+    this.RunRules = function () {
+        this.el.removeClass("alerts-border");
+        if(this.setting.mandatory){
+            var inputGui = this.el.find(`#${this.setting.ID}`);
+            if(inputGui.val() == ""){
+                this.el.addClass("alerts-border");
+                return false;
+            }
+        }
+        return true;
     }
 }
 function Field_checkbox(setting, preLoadData = null) {
@@ -357,5 +425,23 @@ function Field_checkbox(setting, preLoadData = null) {
             return {'fieldID': this.setting.ID, 'checked': checkedList};
         }
         return null;
+    }
+    this.RunRules = function () {
+        this.el.removeClass("alerts-border");
+        if(this.setting.mandatory){
+            var valid = false;
+            for (let i = 0; i < this.setting.values.length; i++) {
+                var checkBoxGui = this.el.find(`#${this.setting.ID}_${i}`);
+                if(checkBoxGui.is(':checked')){
+                    valid = true;
+                    break;
+                }
+            }
+            if(!valid){
+                this.el.addClass("alerts-border");
+            }
+            return valid;
+        }
+        return true;
     }
 }

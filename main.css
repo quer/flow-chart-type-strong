@@ -154,3 +154,10 @@
 	padding: 0px;
 	width: 200px;
 }
+.alerts-border {
+  border: 2px #ff0000 solid;
+  
+  animation: blink 1s;
+  animation-iteration-count: 3;
+}
+@keyframes blink { 50% { border-color:#000 ; }  }

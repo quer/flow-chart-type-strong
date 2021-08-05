@@ -21,6 +21,8 @@ A simple dynamic flow chart, where only the same type can be connected together.
  * the box can have checkbox inside
  * the box can have radio inside
  * clear all modules.
+ * dynamic width on modules ( predefined for each module)
+ * simple rule, it will add red border to mandatory input/output/input fields, when saving
 
 
 
