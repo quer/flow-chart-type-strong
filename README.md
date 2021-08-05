@@ -16,6 +16,12 @@ A simple dynamic flow chart, where only the same type can be connected together.
  * Load modules from json object.
  * Only a output and input of same type can be connected.
  * Simple rules to ensure you only do what is possible
+ * Show arrow between 2 connctions.
+ * the box can have input inside
+ * the box can have checkbox inside
+ * the box can have radio inside
+ * clear all modules.
+
 
 
 # works
@@ -29,6 +35,34 @@ I have setup an example in `api.php` where it will retun a json object:
         {
             "ID": 5,
             "Name": "sss",
+            "field": [
+                {
+                    "ID": "1_F_1",
+                    "text": "Start",
+                    "type": "checkbox",
+                    "values": [
+                        "HTML",
+                        "CSS"
+                    ],
+                    "mandatory": true
+                },
+                {
+                    "ID": "1_F_2",
+                    "text": "GroupID",
+                    "type": "input",
+                    "mandatory": true
+                },
+                {
+                    "ID": "1_F_3",
+                    "text": "What to jump?",
+                    "type": "radio",
+                    "values": [
+                        "yes",
+                        "no"
+                    ],
+                    "mandatory": true
+                }
+            ]
             "input": [
                 {
                     "ID": "5_I_1",
@@ -57,6 +91,8 @@ I have setup an example in `api.php` where it will retun a json object:
 here we defind what boxes exist, in the example above. we create a box whit a uniq id `5` and a name. 
 Then we defind what it will take as input. For each input wee need to set a uniq id, and a name to show in the ui. then we need to tell what type it will take. here in the example it will take `2`, then only a output of type `2` will be able to be connected.
 The same will be made for the ouputs.
+Also you can defind what input field, that also shoud be in the module. At the monent there is only 3 types of input `checkbox` `input` `radio`. the posibal values for `checkbox` and `radio` shoud be defiend in the `values` tag as a list. 
+
 As seen in the example, that box will have 1 input of type `2` and 2 output of type `1` and `3`
 
 ### Save modules
@@ -69,6 +105,8 @@ to use that as the Preload modules, all you have to do, it to `JSON.stringify` t
 To be able to preload modules, the `load` must be set. in the example above here, i have stringify some json. it will be showen as Json below. 
 Here we can see a list of all the boxes that it will create. in the tag `boxes`. In the example below. it will create a box of ID `5` and `3` at thoes pos. And store the id (`RealId`) on that box.
 Then in the connections we defind how it is connection between the input and output, and what box to what box.
+The field export works, as it will have a `fieldID` and stored the index of the seleced `checkbox` or `radio`. or value if it type of `input`.
+
 The way it works is, it take the `FromRealId` (1) and find the box whit that `RealId` and then in that box fid the output whit ID `5_O_1` and then find the box whit `RealId` that is `ToRealId` (10). And in that box find input whit ID `3_I_1`
 
 ```js
@@ -78,7 +116,24 @@ The way it works is, it take the `FromRealId` (1) and find the box whit that `Re
             "ID": 5,
             "RealId": 1,
             "x": "684px",
-            "y": "169px"
+            "y": "169px",
+            "fields": [
+                {
+                    "fieldID": "1_F_1",
+                    "checked": [
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "fieldID": "1_F_2",
+                    "value": "asd"
+                },
+                {
+                    "fieldID": "1_F_3",
+                    "checked": 1
+                }
+            ]
         },
         {
             "ID": 3,

@@ -31,6 +31,11 @@
 	bottom: 50px;
 	right: 50px;
 }
+#clear {
+	position: absolute;
+	bottom: 50px;
+	right: 150px;
+}
 /*
 	drag and drop menu elemets
 */
@@ -73,9 +78,6 @@
 	transform: rotate(90deg);
 	Z-index: 2;
 }
-.inputs, .outputs {
-    width: 0;
-}
 .flow_content_node {
   width: 100%;
   display: block;
@@ -104,7 +106,7 @@
 	position: relative;
 }
   .input, .output {
-    position: relative;
+    position: absolute;
     background: white;
     height: 15px;
     width: 15px;
@@ -118,12 +120,12 @@
 	left: -10px;
 }
 .output{
-	right: -190px;
+	right: -10px;
 }
 .input_text, .output_text{
-	position: absolute;
+	position: relative;
 	top: 0px;
-	width: 175px;
+  padding-right: 25px;
 
 }
 .input_text{

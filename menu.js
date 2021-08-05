@@ -1,19 +1,17 @@
 
 async function Data(url = '', method = 'GET') {
-    // Default options are marked with *
     const response = await fetch(url, {
-      method: method, // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *cors, same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'same-origin', // include, *same-origin, omit
+      method: method,
+      mode: 'cors', 
+      cache: 'no-cache',
+      credentials: 'same-origin', 
       headers: {
         'Content-Type': 'application/json'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
       },
-      redirect: 'follow', // manual, *follow, error
-      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      redirect: 'follow', 
+      referrerPolicy: 'no-referrer', 
     });
-    return response.json(); // parses JSON response into native JavaScript objects
+    return response.json(); 
 }
 var allMenuItems = [];
 var allboxs = [];
@@ -47,15 +45,15 @@ $("#flow").on("dragover", function (ev) {
     ev.originalEvent.preventDefault();
 })
 
-function CreateBox(setting, pos, RealId) {
-    allboxs.push(new box(setting, pos, RealId));
+function CreateBox(setting, pos, preloadData = null) {
+    allboxs.push(new box(setting, pos, preloadData));
 }
 function Load(data) {
     //first load all boxes
     data.boxes.forEach(box => {
         var menuItem = GetMenuItem(box.ID);
         if(menuItem != null){
-            CreateBox(menuItem.setting, {x: box.x, y: box.y}, box.RealId);
+            CreateBox(menuItem.setting, {x: box.x, y: box.y}, {RealId: box.RealId, fields: box.fields});
         }else{
             console.log("noget gik galt, ID:" + box.ID)
         }
