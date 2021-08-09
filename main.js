@@ -198,8 +198,9 @@ function Input(setting, parentBox) {
         if(output != null){
             if(output.parentBox != that.parentBox){
                 if(that.connectedTo == null){
-                    if(output.type == that.allow){
+                    if(that.DoTypeMatch(output.type)){
                         that.DeleteConnection()
+                        output.DeleteConnection();
                         that.connectedTo = output;
                         that.line = new LeaderLine(
                             $("#" + output.setting.ID + "_" + output.id)[0],
@@ -223,6 +224,35 @@ function Input(setting, parentBox) {
         }else{
             alert("intet output valgt");
         }
+    }
+    this.DoTypeMatch = function (outputTypeList1) {
+        var returnValue = false;
+        if(Array.isArray(this.allow)){
+            this.allow.forEach(allowedType => {
+                if(Array.isArray(outputTypeList1)){
+                    if(outputTypeList1.includes(allowedType)){
+                        returnValue = true;
+                        return;
+                    }
+                }else{
+                    if(allowedType == outputTypeList1){
+                        returnValue = true;
+                        return;
+                    }
+                }
+            });
+        }else{
+            if(Array.isArray(outputTypeList1)){
+                if(outputTypeList1.includes(this.allow)){
+                    returnValue = true;
+                }
+            }else{
+                if(this.allow == outputTypeList1){
+                    returnValue = true;
+                }
+            }
+        }
+        return returnValue;
     }
     this.DeleteConnection = function () {
         if(that.connectedTo != null){

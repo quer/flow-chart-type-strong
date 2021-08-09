@@ -32,8 +32,8 @@ $outp = array(
             'input' => array(
                 array(
                     'ID' => '1_I_1',
-                    'Name' => 'Start',
-                    'type' => 'Start',
+                    'Name' => 'Start or 1',
+                    'type' => array('Start', '1'),
                     'mandatory' => true
                 ) 
             ), 
@@ -127,8 +127,8 @@ $outp = array(
             'output' => array(
                 array(
                     'ID' => '5_O_1',
-                    'Name' => '1',
-                    'type' => '1'
+                    'Name' => '1 or 2',
+                    'type' => array('2', '1')
                 ),
                 array(
                     'ID' => '5_O_2',

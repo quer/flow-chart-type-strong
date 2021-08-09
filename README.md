@@ -23,6 +23,7 @@ A simple dynamic flow chart, where only the same type can be connected together.
  * clear all modules.
  * dynamic width on modules ( predefined for each module)
  * simple rule, it will add red border to mandatory input/output/input fields, when saving
+ * input and ouput can be noew then one type. 
 
 # demo
 https://quers.net/flow/
@@ -70,7 +71,7 @@ I have setup an example in `api.php` where it will retun a json object:
                 {
                     "ID": "5_I_1",
                     "Name": "2",
-                    "type": "2"
+                    "type": ['2', '1']
                 }
             ],
             "output": [
