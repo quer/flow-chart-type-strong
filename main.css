@@ -36,6 +36,11 @@
 	bottom: 50px;
 	right: 150px;
 }
+#run {
+	position: absolute;
+	bottom: 50px;
+	right: 250px;
+}
 /*
 	drag and drop menu elemets
 */

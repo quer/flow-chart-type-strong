@@ -8,6 +8,7 @@ function box(settings, poss, preloadData = null) {
     if(preloadData != null){ // if preload is not null, then it was added by the import
         this.preloadId = preloadData.RealId;
     }
+    this.runned = false;
     this.input = [];
     this.output = [];
     this.field = [];
@@ -43,7 +44,7 @@ function box(settings, poss, preloadData = null) {
         <div class="inputs"></div>
         </div>
         <div class="box box-normal">
-            ${ this.settings.Name }
+            ${ this.settings.Name } - ${ this.settings.ID }_${ this.id }
         </div>
         <div class="box box-normal">
             <div class="fields"></div>
@@ -179,6 +180,39 @@ function box(settings, poss, preloadData = null) {
         });
         return valid;
     }
+    this.Run = function () {
+        var that = this;
+        return new Promise(resolve => resolve())
+        .then(function () {
+            that.el.css("border", "1px solid #0efe0e")
+            return;
+        })
+        .then(function () {
+            return new Promise((resolve) => {
+                setTimeout(resolve, 1000);
+            });
+        })
+        .then(function () {
+            var ReadyToRunThis = !that.runned && ((that.input.length == 0 || that.input.every(x => x.connectedTo == null)) || that.input.every(x => x.HaveRunned()));
+            if(ReadyToRunThis){
+                that.el.css("border", "1px solid red")
+                that.runned = true;
+                return new Promise((resolve) => { setTimeout(resolve, 1000); })
+                .then(async function () {
+                    for (let i = 0; i < that.output.length; i++) {
+                        const output = that.output[i];
+                        if(output.connectedTo != null){
+                            await output.connectedTo.parentBox.Run();
+                        }
+                    }
+                    return
+                })
+            }else{
+                that.el.css("border", "1px solid blue")
+            }
+            return false;
+        })
+    }
 }
 
 function Input(setting, parentBox) {
@@ -272,6 +306,14 @@ function Input(setting, parentBox) {
             return false;
         }
         return true;
+    }
+    
+    this.HaveRunned = function () {
+        var haveRunned = false;
+        if(this.connectedTo != null && this.connectedTo.parentBox.runned){
+            haveRunned = true;
+        }
+        return haveRunned;
     }
 }
 function Output(setting, parentBox) {

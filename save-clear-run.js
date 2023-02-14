@@ -25,3 +25,15 @@ $("#clear").click(function () {
         allboxs[i].Delete()
     }
 })
+
+$("#run").click(async function () {
+    for (let i = 0; i < allboxs.length; i++) {
+        allboxs[i].runned = false;
+        allboxs[i].el.css("border", "")
+    }
+    console.log("run");
+    var boxs = allboxs.filter(x => x.input.length == 0 || x.input.every(x => x.connectedTo == null));
+    for (let i = 0; i < boxs.length; i++) {
+        await boxs[i].Run();
+    }
+})
